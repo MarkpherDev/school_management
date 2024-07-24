@@ -1,29 +1,26 @@
 package com.martin.projects.service;
 
-import com.martin.projects.dto.request.SaveStudent;
-import com.martin.projects.dto.response.StudentDto;
-import com.martin.projects.util.StudentGender;
+import com.martin.projects.dto.request.SaveSchool;
+import com.martin.projects.dto.response.SchoolDto;
 import java.util.List;
 
 public interface SchoolService {
 
-  List<StudentDto> findAll();
+  List<SchoolDto> findAll();
 
-  List<StudentDto> findByName(String name);
+  List<SchoolDto> findByName(String name);
 
-  List<StudentDto> findByLastname(String lastname);
+  List<SchoolDto> findByCity(String city);
 
-  List<StudentDto> findByGrade(int grade);
+  List<SchoolDto> findByState(String state);
 
-  List<StudentDto> findByGender(StudentGender gender);
+  List<SchoolDto> findByPostalCode(String postalCode);
 
-  List<StudentDto> findBySchool(Long id);
+  SchoolDto findById(Long id);
 
-  StudentDto findById(Long id);
+  SchoolDto createSchool(SaveSchool student);
 
-  StudentDto createStudent(SaveStudent student);
+  SchoolDto updateSchool(Long id, SaveSchool student);
 
-  StudentDto updateStudent(Long id, SaveStudent student);
-
-  void deleteStudent(Long id);
+  void deleteSchool(Long id);
 }

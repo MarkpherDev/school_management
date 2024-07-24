@@ -12,5 +12,5 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
   List<School> findByStateContainingIgnoreCase(String state);
 
-  List<School> findByPostalCode(String postalCode);
+  List<School> findByPostalCodeContainingIgnoreCase(String postalCode);
 }
