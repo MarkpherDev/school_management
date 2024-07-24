@@ -66,8 +66,8 @@ public class SchoolServiceImpl implements SchoolService {
   }
 
   @Override
-  public SchoolDto createSchool(SaveSchool student) {
-    School newSchool = SchoolMapper.toSchoolEntity(student);
+  public SchoolDto createSchool(SaveSchool school) {
+    School newSchool = SchoolMapper.toSchoolEntity(school);
     return SchoolMapper.toSchoolDto(schoolRepository.save(newSchool));
   }
 
