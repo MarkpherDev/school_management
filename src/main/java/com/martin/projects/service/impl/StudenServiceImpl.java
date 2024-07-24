@@ -4,7 +4,9 @@ import com.martin.projects.dto.request.SaveStudent;
 import com.martin.projects.dto.response.StudentDto;
 import com.martin.projects.exception.ObjectNotFoundException;
 import com.martin.projects.mapper.StudenMapper;
+import com.martin.projects.persistence.entity.School;
 import com.martin.projects.persistence.entity.Student;
+import com.martin.projects.persistence.repository.SchoolRepository;
 import com.martin.projects.persistence.repository.StudentRepository;
 import com.martin.projects.service.StudentService;
 import com.martin.projects.util.StudentGender;
@@ -19,10 +21,12 @@ public class StudenServiceImpl implements StudentService {
 
 
   private final StudentRepository studentRepository;
+  private final SchoolRepository schoolRepository;
 
   @Autowired
-  public StudenServiceImpl(StudentRepository studentRepository) {
+  public StudenServiceImpl(StudentRepository studentRepository, SchoolRepository schoolRepository) {
     this.studentRepository = studentRepository;
+    this.schoolRepository = schoolRepository;
   }
 
   @Transactional(readOnly = true)
@@ -76,7 +80,12 @@ public class StudenServiceImpl implements StudentService {
 
   @Override
   public StudentDto createStudent(SaveStudent student) {
+    School schoolExists = schoolRepository.findById(student.getSchoolId())
+        .orElseThrow(
+            () -> new ObjectNotFoundException("School wit id " + student.getSchoolId() + " "
+                + "not found."));
     Student newStudent = StudenMapper.toStudentEntity(student);
+    newStudent.setSchool(schoolExists);
     return StudenMapper.toStudentDto(studentRepository.save(newStudent));
   }
 
@@ -84,7 +93,12 @@ public class StudenServiceImpl implements StudentService {
   public StudentDto updateStudent(Long id, SaveStudent student) {
     Student oldStudent = studentRepository.findById(id)
         .orElseThrow(() -> new ObjectNotFoundException("Student with id " + id + " not found "));
+    School schoolExists = schoolRepository.findById(student.getSchoolId())
+        .orElseThrow(
+            () -> new ObjectNotFoundException("School wit id " + student.getSchoolId() + " "
+                + "not found."));
     StudenMapper.updateStudentEntity(oldStudent, student);
+    oldStudent.setSchool(schoolExists);
     return StudenMapper.toStudentDto(studentRepository.save(oldStudent));
   }
 

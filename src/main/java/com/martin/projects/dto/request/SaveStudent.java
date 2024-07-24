@@ -1,5 +1,6 @@
 package com.martin.projects.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.martin.projects.util.StudentGender;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -39,4 +40,8 @@ public class SaveStudent {
   @Min(value = 1, message = "El minimo valor es 1")
   @Max(value = 6, message = "el maximo valor es 6")
   private int grade;
+
+  @JsonProperty(value = "school_id")
+  @NotBlank(message = "El campor school_id no puede ir vacio")
+  private Long schoolId;
 }
