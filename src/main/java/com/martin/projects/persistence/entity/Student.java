@@ -3,6 +3,8 @@ package com.martin.projects.persistence.entity;
 import com.martin.projects.util.StudentGender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +31,10 @@ public class Student {
   private String name;
   private String lastname;
   private Date birthday;
+
+  @Enumerated(EnumType.STRING)
   private StudentGender gender;
+  
   private int grade;
 
   @CreationTimestamp
