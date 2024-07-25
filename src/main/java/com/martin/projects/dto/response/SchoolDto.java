@@ -24,5 +24,5 @@ public class SchoolDto {
   private String postalCode;
   private String phone;
   private LocalDateTime createdAt;
-  private List<StudentDto> students;
+  private List<Long> studentIds;
 }

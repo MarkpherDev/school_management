@@ -5,7 +5,8 @@ import com.martin.projects.dto.response.StudentDto;
 import com.martin.projects.persistence.entity.Student;
 import java.util.List;
 
-public class StudenMapper {
+public class StudentMapper {
+
 
   public static StudentDto toStudentDto(Student student) {
     if (student == null) {
@@ -20,7 +21,7 @@ public class StudenMapper {
         student.getGender(),
         student.getGrade(),
         student.getCreatedAt(),
-        SchoolMapper.toSchoolDto(student.getSchool())
+        student.getSchool().getId()
     );
   }
 
@@ -30,7 +31,7 @@ public class StudenMapper {
     }
 
     return students.stream()
-        .map(StudenMapper::toStudentDto)
+        .map(StudentMapper::toStudentDto)
         .toList();
   }
 

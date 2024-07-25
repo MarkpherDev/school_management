@@ -1,5 +1,7 @@
 package com.martin.projects.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +39,7 @@ public class School {
   @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
   private LocalDateTime createdAt;
 
-  @OneToMany(mappedBy = "school")
+  @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
   private List<Student> students;
 }

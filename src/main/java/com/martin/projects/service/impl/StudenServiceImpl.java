@@ -3,7 +3,7 @@ package com.martin.projects.service.impl;
 import com.martin.projects.dto.request.SaveStudent;
 import com.martin.projects.dto.response.StudentDto;
 import com.martin.projects.exception.ObjectNotFoundException;
-import com.martin.projects.mapper.StudenMapper;
+import com.martin.projects.mapper.StudentMapper;
 import com.martin.projects.persistence.entity.School;
 import com.martin.projects.persistence.entity.Student;
 import com.martin.projects.persistence.repository.SchoolRepository;
@@ -32,42 +32,42 @@ public class StudenServiceImpl implements StudentService {
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findAll() {
-    return StudenMapper.toStudentDtoList(studentRepository.findAll());
+    return StudentMapper.toStudentDtoList(studentRepository.findAll());
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findByName(String name) {
     List<Student> students = studentRepository.findByNameContainingIgnoreCase(name);
-    return StudenMapper.toStudentDtoList(students);
+    return StudentMapper.toStudentDtoList(students);
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findByLastname(String lastname) {
     List<Student> students = studentRepository.findByLastnameContainingIgnoreCase(lastname);
-    return StudenMapper.toStudentDtoList(students);
+    return StudentMapper.toStudentDtoList(students);
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findByGrade(int grade) {
     List<Student> students = studentRepository.findByGrade(grade);
-    return StudenMapper.toStudentDtoList(students);
+    return StudentMapper.toStudentDtoList(students);
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findByGender(StudentGender gender) {
     List<Student> students = studentRepository.findByGender(gender);
-    return StudenMapper.toStudentDtoList(students);
+    return StudentMapper.toStudentDtoList(students);
   }
 
   @Transactional(readOnly = true)
   @Override
   public List<StudentDto> findBySchool(Long id) {
     List<Student> students = studentRepository.findBySchoolId(id);
-    return StudenMapper.toStudentDtoList(students);
+    return StudentMapper.toStudentDtoList(students);
   }
 
   @Transactional(readOnly = true)
@@ -75,7 +75,7 @@ public class StudenServiceImpl implements StudentService {
   public StudentDto findById(Long id) {
     Student student = studentRepository.findById(id)
         .orElseThrow(() -> new ObjectNotFoundException("Student with id " + id + " not found "));
-    return StudenMapper.toStudentDto(student);
+    return StudentMapper.toStudentDto(student);
   }
 
   @Override
@@ -84,9 +84,9 @@ public class StudenServiceImpl implements StudentService {
         .orElseThrow(
             () -> new ObjectNotFoundException("School wit id " + student.getSchoolId() + " "
                 + "not found."));
-    Student newStudent = StudenMapper.toStudentEntity(student);
+    Student newStudent = StudentMapper.toStudentEntity(student);
     newStudent.setSchool(schoolExists);
-    return StudenMapper.toStudentDto(studentRepository.save(newStudent));
+    return StudentMapper.toStudentDto(studentRepository.save(newStudent));
   }
 
   @Override
@@ -97,15 +97,20 @@ public class StudenServiceImpl implements StudentService {
         .orElseThrow(
             () -> new ObjectNotFoundException("School wit id " + student.getSchoolId() + " "
                 + "not found."));
-    StudenMapper.updateStudentEntity(oldStudent, student);
+    StudentMapper.updateStudentEntity(oldStudent, student);
     oldStudent.setSchool(schoolExists);
-    return StudenMapper.toStudentDto(studentRepository.save(oldStudent));
+    return StudentMapper.toStudentDto(studentRepository.save(oldStudent));
   }
 
   @Override
   public void deleteStudent(Long id) {
     Student studentExists = studentRepository.findById(id)
         .orElseThrow(() -> new ObjectNotFoundException("Student with id " + id + " not found "));
+    School school = studentExists.getSchool();
+    if (school != null) {
+      school.getStudents().remove(studentExists);
+      schoolRepository.save(school);
+    }
     studentRepository.delete(studentExists);
   }
 }

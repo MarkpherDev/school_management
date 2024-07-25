@@ -6,7 +6,9 @@ import com.martin.projects.service.SchoolService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,8 +80,10 @@ public class SchoolController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> deleteSchool(@PathVariable("id") Long id) {
+  public ResponseEntity<Map<String, String>> deleteSchool(@PathVariable("id") Long id) {
     schoolService.deleteSchool(id);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Escuela Eliminada Satisfactoriamente");
+    Map<String, String> message = new HashMap<>();
+    message.put("message", "Escuela eliminada correctamente");
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(message);
   }
 }

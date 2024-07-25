@@ -1,5 +1,6 @@
 package com.martin.projects.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.martin.projects.util.StudentGender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,7 +35,7 @@ public class Student {
 
   @Enumerated(EnumType.STRING)
   private StudentGender gender;
-  
+
   private int grade;
 
   @CreationTimestamp
@@ -43,5 +44,6 @@ public class Student {
 
   @ManyToOne
   @JoinColumn(name = "school_id")
+  @JsonBackReference
   private School school;
 }

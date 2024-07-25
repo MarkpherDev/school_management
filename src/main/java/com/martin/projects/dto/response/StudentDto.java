@@ -21,5 +21,5 @@ public class StudentDto {
   private StudentGender gender;
   private int grade;
   private LocalDateTime createdAt;
-  private SchoolDto schoolDto;
+  private Long schoolId;
 }

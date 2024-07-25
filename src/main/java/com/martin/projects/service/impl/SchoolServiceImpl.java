@@ -72,10 +72,10 @@ public class SchoolServiceImpl implements SchoolService {
   }
 
   @Override
-  public SchoolDto updateSchool(Long id, SaveSchool student) {
+  public SchoolDto updateSchool(Long id, SaveSchool school) {
     School oldSchool = schoolRepository.findById(id)
         .orElseThrow(() -> new ObjectNotFoundException("School wit id " + id + " not found"));
-    SchoolMapper.updateSchoolEntity(oldSchool, student);
+    SchoolMapper.updateSchoolEntity(oldSchool, school);
     return SchoolMapper.toSchoolDto(schoolRepository.save(oldSchool));
   }
 

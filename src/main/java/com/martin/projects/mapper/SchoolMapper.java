@@ -3,6 +3,7 @@ package com.martin.projects.mapper;
 import com.martin.projects.dto.request.SaveSchool;
 import com.martin.projects.dto.response.SchoolDto;
 import com.martin.projects.persistence.entity.School;
+import com.martin.projects.persistence.entity.Student;
 import java.util.List;
 
 public class SchoolMapper {
@@ -22,7 +23,8 @@ public class SchoolMapper {
         school.getPostalCode(),
         school.getPhone(),
         school.getCreatedAt(),
-        StudenMapper.toStudentDtoList(school.getStudents())
+        school.getStudents().stream()
+            .map(Student::getId).toList()
     );
   }
 
